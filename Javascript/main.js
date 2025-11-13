@@ -1,42 +1,64 @@
 const productos = [
-{ nombre: "Base Liquida" , precio: 5500 }, 
-{ nombre: "Labial" , precio: 3500 }, 
-{ nombre: "Rimel" , precio: 4000 }, 
-{ nombre: "Rubor" , precio: 3800 }, 
-{ nombre: "Sombra" , precio: 3000 }, 
-]; 
+  { nombre: "Base Líquida", precio: 5500 },
+  { nombre: "Labial", precio: 3500 },
+  { nombre: "Rímel", precio: 4000 },
+  { nombre: "Rubor", precio: 3800 },
+  { nombre: "Sombra", precio: 3000 }
+];
 
-function mostrarProductos() {
-    console.log("Productos Disponibles:"); 
-    productos.forEach((producto , index) => { 
-        console.log(`${index + 1}. ${producto.nombre} - $${producto.precio}`);
+let carrito = JSON.parse(localStorage.getItem("carrito")) || []
+
+function mostrarProductos(lista) {
+  const contenedor = document.getElementById("productos");
+  contenedor.innerHTML = "";
+
+  lista.forEach((producto, index) => {
+    const div = document.createElement("div");
+    div.classList.add("producto");
+    div.innerHTML = `
+      <h3>${producto.nombre}</h3>
+      <p>Precio: $${producto.precio}</p>
+      <button onclick="agregarAlCarrito(${index})">Agregar</button>
+    `;
+    contenedor.appendChild(div);
   });
 }
 
-function calcularTotal() { 
-    let total = 0;
-    let seguir = true;
-    while(seguir) { 
-        mostrarProductos();
-        let opcion = parseInt(prompt("ingrese el numero del producto que desee agregar (1-5):")); 
-        if(opcion >= 1 && opcion <= productos.length) { 
-            total += productos[opcion - 1]. precio; 
-               alert(`Agregaste ${productos[opcion - 1].nombre}. Total actual: $${total}`);
-     } else { 
-        alert("opcion invalida, intente de nuevo");   
-     }
-     seguir = confirm("Desea agregar otro producto?");
-    }
-    return total; 
-} 
-
-function calcularCuotas(total) {
-  let cuotas = parseInt(prompt("Ingrese en cuántas cuotas desea pagar (3, 6 o 12):"));
-  let totalCuota = total / cuotas;
-  alert(`El total a pagar es $${total} en ${cuotas} cuotas de $${totalCuota.toFixed(2)}.`);
+function agregarAlCarrito(indice) {
+  carrito.push(productos[indice]);
+  localStorage.setItem("carrito", JSON.stringify(carrito));
+  mostrarCarrito();
 }
 
-alert("¡Bienvenida a Francesca Makeup!");
-let totalCompra = calcularTotal();
-calcularCuotas(totalCompra);
-alert("Gracias por tu compra ");
+function mostrarCarrito() {
+  const lista = document.getElementById("lista-carrito");
+  const total = document.getElementById("total");
+  lista.innerHTML = "";
+
+  let suma = 0;
+  carrito.forEach(item => {
+    const li = document.createElement("li");
+    li.textContent = `${item.nombre} - $${item.precio}`;
+    lista.appendChild(li);
+    suma += item.precio;
+  });
+
+  total.textContent = `Total: $${suma}`;
+  localStorage.setItem("total", suma);
+}
+
+function calcularCuotas(total, cuotas) {
+  return total / cuotas;
+}
+
+document.getElementById("btnCalcular").addEventListener("click", () => {
+  const cuotas = parseInt(document.getElementById("cuotas").value);
+  const total = carrito.reduce((acc, p) => acc + p.precio, 0);
+  const montoCuota = calcularCuotas(total, cuotas);
+
+  const detalle = document.getElementById("detalle-cuotas");
+  detalle.textContent = `Total a pagar: $${total} en ${cuotas} cuotas de $${montoCuota.toFixed(2)}.`;
+});
+
+mostrarProductos(productos);
+mostrarCarrito();

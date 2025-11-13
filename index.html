@@ -1,13 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulador de compra - Francesca Makeup</title>
-    <script src="Javascript/main.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Francesca Makeup - Tienda</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="Javascript/main.js" defer></script> 
 </head>
 <body>
-<h1>Simulador de compra</h1>    
-<p>Este simulador calcula el total de tu compra de tu maquillaje segun los productos que elijas!</p>
+  <header>
+    <h1>Francesca Makeup</h1>
+  </header>
+
+  <main>
+    <section id="productos" class="productos"></section>
+
+    <section id="carrito" class="carrito">
+      <h2>Carrito de compras</h2>
+      <ul id="lista-carrito"></ul>
+      <p id="total">Total: $0</p>
+
+      <div class="acciones">
+        <label for="cuotas">Elegí tus cuotas:</label>
+        <select id="cuotas">
+          <option value="3">3 cuotas</option>
+          <option value="6">6 cuotas</option>
+          <option value="12">12 cuotas</option>
+        </select>
+        <button id="btnCalcular">Calcular total con cuotas</button>
+      </div>
+
+      <p id="detalle-cuotas"></p>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 Francesca Makeup</p>
+  </footer>
 </body>
 </html>
